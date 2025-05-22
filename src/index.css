@@ -1,0 +1,41 @@
+body{
+  background-color: black;
+  color: white;
+ 
+}
+
+body::-webkit-scrollbar{
+  display:none;
+}
+
+.nav_bar{
+  display:flex;
+  justify-content: space-around;
+  align-items: center;
+  width:100%;
+  padding:10px;
+  background-color: rgb(189, 139, 236);
+
+}
+.search_bar{
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  background-color: black;
+  border-radius: 20px;
+  width:30%;
+  padding:10px
+}
+.search_bar input{
+  border:none;
+  width:400px;
+  color:white;
+  background-color: black;
+}
+.search_bar input::placeholder{
+  font-weight: bold;
+  color:white
+}
+.search_bar input:focus{
+  outline: none;
+}
