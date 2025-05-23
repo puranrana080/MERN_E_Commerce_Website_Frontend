@@ -175,6 +175,30 @@ const AppState = (props) => {
       transition: Bounce,
     });
   };
+  //remove from cart
+   const removeFromCart = async (productId) => {
+    const api = await axios.delete(
+      `${url}/cart/remove/${productId}`,
+      {
+        headers: { "Content-Type": "Application/json", Auth: token },
+        withCredentials: true,
+      }
+    );
+
+    setReload(!reload);
+    console.log("remove item",api.data)
+    toast.success(api.data.message, {
+      position: "top-right",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+      transition: Bounce,
+    });
+  };
 
   return (
     <AppContext.Provider
@@ -193,6 +217,7 @@ const AppState = (props) => {
         addToCart,
         cart,
         decreaseQty,
+        removeFromCart
       }}
     >
       {props.children}
