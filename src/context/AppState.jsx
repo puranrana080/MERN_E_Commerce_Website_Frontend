@@ -9,7 +9,8 @@ const AppState = (props) => {
   const [products, setProducts] = useState([]);
   const [token, setToken] = useState();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [filteredData,setFilteredData]=useState([])
+  const [filteredData, setFilteredData] = useState([]);
+  const [user, setUser] = useState();
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -18,10 +19,20 @@ const AppState = (props) => {
         withCredentials: true,
       });
       setProducts(api.data.products);
-      setFilteredData(api.data.products)
+      setFilteredData(api.data.products);
+      userProfile();
     };
     fetchProduct();
   }, [token]);
+
+  useEffect(() => {
+    let lsToken = localStorage.getItem("token");
+    if (lsToken) {
+      setToken(lsToken);
+      setIsAuthenticated(true);
+    }
+  }, []);
+
   //register user
   const register = async (name, email, password) => {
     const api = await axios.post(
@@ -68,17 +79,17 @@ const AppState = (props) => {
     });
     console.log(api.data);
     setToken(api.data.token);
-    localStorage.setItem('token',api.data.token)
+    localStorage.setItem("token", api.data.token);
     setIsAuthenticated(true);
     return api.data;
   };
 
   //logout User
-  const logout = ()=>{
-    setIsAuthenticated(false)
-    setToken("")
-    localStorage.removeItem('token')
-     toast.success("Logged Out Successfully", {
+  const logout = () => {
+    setIsAuthenticated(false);
+    setToken("");
+    localStorage.removeItem("token");
+    toast.success("Logged Out Successfully", {
       position: "top-right",
       autoClose: 1500,
       hideProgressBar: false,
@@ -89,7 +100,18 @@ const AppState = (props) => {
       theme: "dark",
       transition: Bounce,
     });
-  }
+  };
+
+  //user profile
+  const userProfile = async () => {
+    const api = await axios.get(`${url}/user/profile`, {
+      headers: { "Content-Type": "Application/json", Auth: token },
+      withCredentials: true,
+    });
+    console.log(api.data);
+    setUser(api.data.user);
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -100,7 +122,10 @@ const AppState = (props) => {
         token,
         isAuthenticated,
         setIsAuthenticated,
-        filteredData,setFilteredData,logout
+        filteredData,
+        setFilteredData,
+        logout,
+        user,
       }}
     >
       {props.children}
