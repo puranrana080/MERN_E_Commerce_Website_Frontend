@@ -1,7 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
 import AppContext from "../context/AppContext";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
+  const navigate = useNavigate();
   const { cart, decreaseQty, addToCart, removeFromCart, clearCart } =
     useContext(AppContext);
   const [qty, setQty] = useState(0);
@@ -21,20 +23,35 @@ const Cart = () => {
   }, [cart]);
   return (
     <>
-      <div className="my-5 text-center">
-        <button
-          className="btn btn-info mx-3"
-          style={{ fontWeight: "bold", fontSize: "1.2rem" }}
-        >
-          Total Qty:- {qty}
-        </button>
-        <button
-          className="btn btn-warning mx-3"
-          style={{ fontWeight: "bold", fontSize: "1.2rem" }}
-        >
-          Total Price:- {price}
-        </button>
-      </div>
+      {cart?.items?.length == 0 ? (
+        <>
+          <div className="text-center my-5">
+            <button
+              onClick={() => navigate("/")}
+              className="btn btn-warning mx-3"
+              style={{ fontWeight: "bold", fontSize: "1.2rem" }}
+            >
+              Continue Shopping
+            </button>
+          </div>
+        </>
+      ) : (
+        <div className="my-5 text-center">
+          <button
+            className="btn btn-info mx-3"
+            style={{ fontWeight: "bold", fontSize: "1.2rem" }}
+          >
+            Total Qty:- {qty}
+          </button>
+          <button
+            className="btn btn-warning mx-3"
+            style={{ fontWeight: "bold", fontSize: "1.2rem" }}
+          >
+            Total Price:- {price}
+          </button>
+        </div>
+      )}
+
       {cart?.items?.map((product) => (
         <div
           key={product._id}
@@ -106,6 +123,7 @@ const Cart = () => {
           <div className="container text-center my-3">
             <button
               className="btn btn-warning mx-3"
+              onClick={() => navigate("/shipping")}
               style={{ fontWeight: "bold" }}
             >
               Checkout
