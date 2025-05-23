@@ -11,6 +11,8 @@ const AppState = (props) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [filteredData, setFilteredData] = useState([]);
   const [user, setUser] = useState();
+  const [cart, setCart] = useState([]);
+  const [reload, setReload] = useState(false);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -23,7 +25,8 @@ const AppState = (props) => {
       userProfile();
     };
     fetchProduct();
-  }, [token]);
+    userCart();
+  }, [token, reload]);
 
   useEffect(() => {
     let lsToken = localStorage.getItem("token");
@@ -112,6 +115,67 @@ const AppState = (props) => {
     setUser(api.data.user);
   };
 
+  //add to cart
+  const addToCart = async (productId, title, price, qty, imgSrc) => {
+    const api = await axios.post(
+      `${url}/cart/add`,
+      { productId, title, price, qty, imgSrc },
+      {
+        headers: { "Content-Type": "Application/json", Auth: token },
+        withCredentials: true,
+      }
+    );
+    setReload(!reload);
+    console.log("mycart", api);
+    toast.success(api.data.message, {
+      position: "top-right",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+      transition: Bounce,
+    });
+  };
+
+  //get User cart
+  const userCart = async () => {
+    const api = await axios.get(`${url}/cart/user`, {
+      headers: { "Content-Type": "Application/json", Auth: token },
+      withCredentials: true,
+    });
+    // console.log("user cart",api.data.cart);
+    // setUser("user cart",api.data.user);
+    setCart(api.data.cart);
+  };
+
+  //decrease  --qty
+  const decreaseQty = async (productId, qty) => {
+    const api = await axios.post(
+      `${url}/cart/--qty`,
+      { productId, qty },
+      {
+        headers: { "Content-Type": "Application/json", Auth: token },
+        withCredentials: true,
+      }
+    );
+
+    setReload(!reload);
+    toast.success(api.data.message, {
+      position: "top-right",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+      transition: Bounce,
+    });
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -126,6 +190,9 @@ const AppState = (props) => {
         setFilteredData,
         logout,
         user,
+        addToCart,
+        cart,
+        decreaseQty,
       }}
     >
       {props.children}
