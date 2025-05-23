@@ -45,7 +45,7 @@ const AppState = (props) => {
     });
     return api.data;
   };
-  //register user
+  //login user
   const login = async (email, password) => {
     const api = await axios.post(
       `${url}/user/login`,
@@ -72,6 +72,24 @@ const AppState = (props) => {
     setIsAuthenticated(true);
     return api.data;
   };
+
+  //logout User
+  const logout = ()=>{
+    setIsAuthenticated(false)
+    setToken("")
+    localStorage.removeItem('token')
+     toast.success("Logged Out Successfully", {
+      position: "top-right",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+      transition: Bounce,
+    });
+  }
   return (
     <AppContext.Provider
       value={{
@@ -82,7 +100,7 @@ const AppState = (props) => {
         token,
         isAuthenticated,
         setIsAuthenticated,
-        filteredData,setFilteredData
+        filteredData,setFilteredData,logout
       }}
     >
       {props.children}

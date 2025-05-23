@@ -7,7 +7,8 @@ const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { setFilteredData, products } = useContext(AppContext);
+  const { setFilteredData, products, logout, isAuthenticated } =
+    useContext(AppContext);
   const filterByCategory = (cat) => {
     setFilteredData(
       products.filter(
@@ -45,15 +46,31 @@ const Navbar = () => {
             />
           </form>
           <div className="right">
-            <button className="btn btn-warning mx-3">Cart</button>
-            <button className="btn btn-warning mx-3">Profile</button>
-            <Link to={"/login"} className="btn btn-secondary mx-3">
-              Login
-            </Link>
-            <Link to={"/register"} className="btn btn-info mx-3">
-              Register
-            </Link>
-            <button className="btn btn-warning mx-3">Logout</button>
+            {isAuthenticated && (
+              <>
+                <button className="btn btn-warning mx-3">Cart</button>
+                <button className="btn btn-warning mx-3">Profile</button>
+                <button
+                  className="btn btn-danger mx-3"
+                  onClick={() => {
+                    logout();
+                    navigate("/");
+                  }}
+                >
+                  Logout
+                </button>
+              </>
+            )}
+            {!isAuthenticated && (
+              <>
+                <Link to={"/login"} className="btn btn-secondary mx-3">
+                  Login
+                </Link>
+                <Link to={"/register"} className="btn btn-info mx-3">
+                  Register
+                </Link>
+              </>
+            )}
           </div>
         </div>
         {location.pathname == "/" && (
