@@ -1,17 +1,15 @@
 import React, { useState } from "react";
-import { Link ,useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
-  const [searchTerm,setSearchTerm]=useState("")
-  const navigate= useNavigate()
+  const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
 
-  const submitHandler=(e)=>{
-    e.preventDefault()
-    navigate(`/product/search/${searchTerm}`)
-    setSearchTerm("")
-
-
-  }
+  const submitHandler = (e) => {
+    e.preventDefault();
+    navigate(`/product/search/${searchTerm}`);
+    setSearchTerm("");
+  };
   return (
     <>
       <div className="nav sticky-top">
@@ -25,13 +23,20 @@ const Navbar = () => {
           </Link>
           <form className="search_bar" onSubmit={submitHandler}>
             <span className="material-symbols-outlined">search</span>
-            <input type="text" value={searchTerm} onChange={(e)=>setSearchTerm(e.target.value)} placeholder="search product.."/>
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="search product.."
+            />
           </form>
           <div className="right">
             <button className="btn btn-warning mx-3">Cart</button>
             <button className="btn btn-warning mx-3">Profile</button>
             <button className="btn btn-warning mx-3">Login</button>
-            <button className="btn btn-warning mx-3">Register</button>
+            <Link to={"/register"} className="btn btn-info mx-3">
+              Register
+            </Link>
             <button className="btn btn-warning mx-3">Logout</button>
           </div>
         </div>
