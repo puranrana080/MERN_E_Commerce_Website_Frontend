@@ -27,8 +27,6 @@ const Address = () => {
     formData;
   const submitHandler = async (e) => {
     e.preventDefault();
-    console.log(formData);
-    alert(formData);
     const result = await shippingAddress(
       fullName,
       address,
