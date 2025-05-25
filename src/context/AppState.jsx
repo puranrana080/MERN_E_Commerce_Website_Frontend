@@ -275,13 +275,12 @@ const AppState = (props) => {
         headers: { "Content-Type": "Application/json", Auth: token },
         withCredentials: true,
       });
-      console.log("user -------Order", api.data);
+      // console.log("user Order", api.data);
       setUserOrder(api.data);
     } catch (error) {
       console.log("error", error.message);
     }
   };
-  console.log("uuuser order", userOrder);
 
   return (
     <AppContext.Provider

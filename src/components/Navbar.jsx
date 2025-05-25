@@ -105,7 +105,7 @@ const Navbar = () => {
             </div>
             <div
               className="items"
-              onClick={() => filterByCategory("Headphones")}
+              onClick={() => filterByCategory("headphones")}
             >
               Headphones
             </div>
